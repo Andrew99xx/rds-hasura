@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Hasura → API Gateway → Lambda webhook
+
+Parameters:
+  HasuraEndpoint:
+    Type: String
+    Description: Hasura GraphQL endpoint (e.g., https://your-hasura-project.hasura.app/v1/graphql)
+  HasuraAdminSecret:
+    Type: String
+    NoEcho: true
+    Description: Hasura admin secret
+
+Resources:
+  WebhookFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs18.x
+      Handler: index.handler
+      CodeUri: .
+      Timeout: 15
+      MemorySize: 256
+      Policies:
+      - AWSLambdaBasicExecutionRole
+      Environment:
+        Variables:
+          HASURA_GRAPHQL_ENDPOINT: !Ref HasuraEndpoint
+          HASURA_ADMIN_SECRET: !Ref HasuraAdminSecret
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /webhook
+            Method: POST
+
+Outputs:
+  ApiUrl:
+    Description: Invoke URL
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/webhook"

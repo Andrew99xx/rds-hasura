@@ -1,0 +1,18 @@
+{
+  "name": "hasura-rds-lambda-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Lambda webhook for Hasura Event Trigger: computes slug and updates tasks via Hasura GraphQL.",
+  "main": "index.js",
+  "exports": "./index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "sam local start-api",
+    "invoke": "sam local invoke WebhookFn --event event.json",
+    "test": "node -e \"console.log('no tests')\""
+  },
+  "dependencies": {}
+}
