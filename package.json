@@ -10,7 +10,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "dev": "sam local start-api",
+    "dev": "node api.js && sam local start-api",
     "invoke": "sam local invoke WebhookFn --event event.json",
     "test": "node -e \"console.log('no tests')\""
   },
